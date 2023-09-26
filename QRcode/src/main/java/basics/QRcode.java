@@ -26,35 +26,6 @@ import java.util.Arrays;
  * };
  */
 public class QRcode {
-
-    public static void main(String[] args) {
-        int n = 4;
-        int[] testInd = new int[n * n];
-        int[] testRot = new int[n * n];
-        /**
-         for (int i = 0; i < testInd.length; i++) {
-         testInd[i] = i;
-         }
-         System.out.println("testInd : " + Arrays.toString(testInd));
-
-         for (int i = 0; i < testInd.length; i++) {
-         testRot[i] = (i%n + 1)*n - i/n -1;
-         }
-         System.out.println("testRot : " + Arrays.toString(testRot));
-         **/
-        boolean[][] t2 = new boolean[][]{
-                {true, false, true, true},
-                {true, false, false, true},
-                {true, true, false, false},
-                {false, false, true, false}
-        };
-
-        QRcode code2 = new QRcode(t2);
-
-        System.out.println(Arrays.toString(unwrap(code2.data)));
-
-    }
-
     protected boolean[][] data;
 
     /**
@@ -75,33 +46,37 @@ public class QRcode {
      */
     // @Override
     public boolean equals(QRcode o) {
-        boolean isEqual = true;
-        boolean [] unwrapedThis = unwrap(this.data);
-        boolean [] unwrapedOther = unwrap(o.data);
+        boolean isEqual = false;
+        boolean[] unwrapedThis = unwrap(this.data);
+        boolean[] unwrapedOther = unwrap(o.data);
+        boolean[][] unwrapedThisTab = new boolean[4][unwrapedThis.length];
 
-        boolean [][] unwrapedThisTab = new boolean[4][unwrapedThis.length];
         unwrapedThisTab[0] = unwrapedThis;
 
         for (int i = 1; i < unwrapedThisTab.length; i++) {
-            unwrapedThisTab[i] = rotate(unwrapedThisTab[i-1]);
+            unwrapedThisTab[i] = rotate(unwrapedThisTab[i - 1]);
         }
 
         for (int i = 0; i < unwrapedThisTab.length; i++) {
+            boolean same = false;
+            for (int j = 0; j < unwrapedThisTab[i].length; j++) {
+                if (unwrapedThisTab[i][j] == unwrapedOther[j]) {
+                    same = true;
+                } else {
+                    same = false;
+                    break;
+                }
+            }
 
-            for(int j = 0; j <unwrapedThisTab[i].length; j++){
-
+            if (same) {
+                isEqual = true;
             }
 
         }
-
-
-
-
-
         return isEqual;
     }
 
-    public static boolean [] unwrap(boolean[][] data) {
+    public static boolean[] unwrap(boolean[][] data) {
         int n = data.length;
         boolean[] unwraped = new boolean[n * n];
         for (int i = 0; i < data.length; i++) {
@@ -112,16 +87,15 @@ public class QRcode {
         return unwraped;
     }
 
-    public static boolean [] rotate(boolean [] tab) {
-        boolean [] rotated = new boolean[tab.length];
+    public static boolean[] rotate(boolean[] tab) {
+        boolean[] rotated = new boolean[tab.length];
         int n = Math.round((int) Math.sqrt(tab.length));
         for (int i = 0; i < tab.length; i++) {
-            rotated[i] = tab[(i%n + 1)*n - i/n -1];
+            rotated[i] = tab[(i % n + 1) * n - i / n - 1];
         }
 
         return rotated;
     }
-
 
 }
 
