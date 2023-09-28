@@ -109,6 +109,23 @@ public class Pascal {
         return (factorialHelper(n - 1, acc));
     }
 
+    public static int [] pascalRecursif(int n)  {
+        int [] result = new int[n];
+        if (n == 1) {return new int[]{1};}
+        if (n == 2) {return new int[]{1,1};}
+
+        int [] previousLine = pascalRecursif(n-1);
+
+        result[0] = 1;
+        result[n-1] = 1;
+
+        for (int i = 1; i < n-1; i++) {
+            result[i] = previousLine[i-1] + previousLine[i];
+        }
+
+        return result;
+    }
+
 
 
 }
