@@ -1,5 +1,6 @@
 package oop;
 
+import java.sql.ResultSet;
 import java.util.EmptyStackException;
 import java.util.Iterator;
 
@@ -17,6 +18,7 @@ public class RecursiveStack<E>  implements Iterable<E> {
      * Creates an empty stack
      */
     public RecursiveStack() {
+
         e = null;
         next = null;
     }
@@ -30,6 +32,8 @@ public class RecursiveStack<E>  implements Iterable<E> {
      */
     private RecursiveStack(E e, RecursiveStack<E> next) {
         // TODO
+        this.e = e;
+        this.next = next;
     }
 
     /**
@@ -41,7 +45,8 @@ public class RecursiveStack<E>  implements Iterable<E> {
      * @return the new stack
      */
     public RecursiveStack<E> add(E e) {
-        // TODO
+
+        return new RecursiveStack<>(e, this);
     }
 
     /**
@@ -52,7 +57,8 @@ public class RecursiveStack<E>  implements Iterable<E> {
      */
     public E top() {
         // TODO
-         return null;
+        if (this.e == null) {throw new EmptyStackException();}
+        return this.e;
     }
 
     /**
@@ -62,8 +68,8 @@ public class RecursiveStack<E>  implements Iterable<E> {
      * @return the stack with the top element removed
      */
     public RecursiveStack<E> removeTop() {
-        // TODO
-         return null;
+        if (this.size() == 0) {throw new IllegalArgumentException();}
+        return this.next;
     }
 
     /**
@@ -72,8 +78,11 @@ public class RecursiveStack<E>  implements Iterable<E> {
      * @return the number of element in the stack
      */
     public int size() {
-        // TODO
-         return -1;
+        int size = 0;
+        RecursiveStack<E> current = this;
+
+        while (current.next != null){size++;current = current.next;}
+        return size;
     }
 
     /**
@@ -83,8 +92,13 @@ public class RecursiveStack<E>  implements Iterable<E> {
      * @return a reversed version of the current stack (the top element becomes the bottom one)
      */
     public RecursiveStack<E> reverse() {
-        // TODO
-         return null;
+        RecursiveStack<E> reverse = new RecursiveStack<>();
+        RecursiveStack<E> current = this;
+        while(current.next != null){
+            reverse.add(current.top());
+            current = current.next;
+        }
+        return reverse;
     }
 
     /**
@@ -96,7 +110,7 @@ public class RecursiveStack<E>  implements Iterable<E> {
     @Override
     public Iterator<E> iterator() {
         // TODO: think about implementing an inner class
-         return null;
+        return null;
     }
 
 
